@@ -1,0 +1,14 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  db-backup:
+    build: .
+    image: mes-qc-backup-service
+    container_name: mes-qc-db-backup
+    volumes: # mapping local folders to the container folder
+      - ./backups:/app/backups
+      - ./logs:/app/logs
+    environment:
+      - TZ=UTC
+    restart: unless-stopped

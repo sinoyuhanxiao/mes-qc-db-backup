@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"ad1f9abe758b45eab625252f6e880ac6","collectionName":"qc-form-tree","type":"collection"}
