@@ -1,11 +1,15 @@
-# docker-compose.yml
 version: '3.8'
 
 services:
   db-backup:
-    build: .
+    build:
+      context: .
+      args:
+        ENV_FILE: .env.dev   # 👈 告诉 Dockerfile 用 .env.dev
     image: mes-qc-backup-service
     container_name: mes-qc-db-backup
+    env_file:
+      - .env.dev             # 👈 仍然保留，供 runtime 用
     volumes: # mapping local folders to the container folder
       - ./backups:/app/backups
       - ./logs:/app/logs

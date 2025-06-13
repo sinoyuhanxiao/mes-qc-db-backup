@@ -1,1 +1,1 @@
-0 * * * * cd /app && /usr/local/bin/python main.py >> /app/logs/cron.log 2>&1
+0 */6 * * * cd /app && /usr/local/bin/python main.py >> /app/logs/cron.log 2>&1

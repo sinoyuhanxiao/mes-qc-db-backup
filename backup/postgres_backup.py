@@ -1,4 +1,3 @@
-# backup/postgres_backup.py
 import os
 import subprocess
 from backup.config import POSTGRES_CONF, BACKUP_BASE_DIR, TIMESTAMP
@@ -7,7 +6,7 @@ def backup_postgres():
     folder = os.path.join(BACKUP_BASE_DIR, 'postgresql', TIMESTAMP)
     os.makedirs(folder, exist_ok=True)
 
-    os.environ['PGPASSWORD'] = POSTGRES_CONF['password'] # sets the password env variable so it does not prompt for a password
+    os.environ['PGPASSWORD'] = POSTGRES_CONF['password']
 
     dump_file = os.path.join(folder, 'schema_backup.sql')
     cmd = [
@@ -20,5 +19,11 @@ def backup_postgres():
         "-f", dump_file
     ]
 
-    subprocess.run(cmd, check=True)
-    return dump_file
+    try:
+        result = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        return dump_file
+    except subprocess.CalledProcessError as e:
+        print("❌ pg_dump failed with the following error:")
+        print(f"Command: {' '.join(cmd)}")
+        print(f"stderr: {e.stderr.decode().strip()}")
+        raise
