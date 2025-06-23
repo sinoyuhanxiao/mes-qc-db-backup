@@ -8,13 +8,13 @@ PG_RESTORE_CONF = {
     "port": 5434,
     "user": "postgres",
     "password": "postgres",
-    "db": "mes_restore",  # Target database for restore
+    "db": "mes_restore_dev",  # Target database for restore
     "schema": "quality_management",
     "schema_file": "latest"  # or specific folder name like "2025-06-05_23-33"
 }
 
 # MongoDB config
-MONGO_RESTORE_URI = "mongodb://localhost:27017"
+MONGO_RESTORE_URI = "mongodb://localhost:27017/dev-mes-qc-dev"
 MONGO_BACKUP_DIR = "latest"  # or timestamp folder name
 
 def get_latest_folder(base_path):
@@ -77,7 +77,9 @@ def restore_mongo():
 
     cmd = [
         r"C:\mongodb-tools\bin\mongorestore.exe",
-        "--uri", MONGO_RESTORE_URI,
+        "--uri", "mongodb://localhost:27017",
+        "--nsFrom", "dev-mes-qc.*",
+        "--nsTo", "dev-mes-qc-dev.*",
         "--drop",
         full_path
     ]
@@ -87,5 +89,14 @@ def restore_mongo():
 
 
 if __name__ == "__main__":
+    # Option 1: Restore from latest
     restore_postgres()
     restore_mongo()
+
+    # Option 2: Restore from specific folder
+    # Set the folder name manually here:
+    # specific_folder = "2025-06-23_17-14"
+    # PG_RESTORE_CONF["schema_file"] = specific_folder
+    # globals()["MONGO_BACKUP_DIR"] = specific_folder
+    # restore_postgres()
+    # restore_mongo()
