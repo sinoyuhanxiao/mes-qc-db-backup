@@ -1,4 +1,4 @@
-name: Sync Fork
+name: 🔄 Sync Fork
 
 on:
   schedule:
@@ -16,5 +16,6 @@ jobs:
           repo: mes-qc-db-backup
           base: master
           head: master
+          ignore_fail: true     # Ignore "nothing to sync" error
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
